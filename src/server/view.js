@@ -6,10 +6,12 @@ var _ = require('lodash')
 var config = require('../../config')
 var wx = require('./wx')
 var db = require('./db')
-var dbChannels = db.dbChannels
+// var dbChannels = db.dbChannels
 var dbComments = db.dbComments
 var hbs = exphbs.create()
 var Handlebars = hbs.handlebars
+var listLimit = config.listLimit
+var floorBits = Math.ceil(Math.log(listLimit+1) / Math.log(10))
 
 module.exports = function (app) {
   //app.engine('jade', jade.__express)
@@ -17,10 +19,10 @@ module.exports = function (app) {
   app.set('view engine', 'hbs')
   app.set('views', path.resolve(__dirname, '../web'))
 
-  app.get('/', addPathSlash, function (req, res) {
-    //res.redirect(prefixUrl('/channels'))
-    res.redirect('open')
-  })
+  // app.get('/', addPathSlash, function (req, res) {
+  //   //res.redirect(prefixUrl('/channels'))
+  //   res.redirect('open')
+  // })
   //app.get('/channels', function (req, res) {
   //  res.send('Top Channels')
   //})
@@ -30,29 +32,34 @@ module.exports = function (app) {
     next()
   })
 
-  app.get('/open', dropPathSlash, function (req, res, next) {
-    res.__tmpl = 'channel-open'
-    next()
-  })
+  // app.get('/open', dropPathSlash, function (req, res, next) {
+  //   res.__tmpl = 'channel-open'
+  //   next()
+  // })
 
-  app.get('/channels/:key', dropPathSlash, function (req, res, next) {
-    var channel = dbChannels.find({
-      key: req.params.key
-    })
-    if (!channel) {
-      return res.redirect('../open')
-    }
-    var comments = dbComments.filter({
-      channel_id: channel.id
-    }).reverse()
+  // app.get('/channels/:key', dropPathSlash, function (req, res, next) {
+  app.get('/', addPathSlash, function (req, res, next) {
+    // var channel = dbChannels.find({
+    //   key: req.params.key
+    // })
+    // if (!channel) {
+    //   return res.redirect('../open')
+    // }
+    // var comments = dbComments.filter({
+    //   channel_id: channel.id
+    // }).reverse()
+    var comments = dbComments.value().slice(-listLimit).reverse()
     res.__tmpl = 'channel-view'
     res.__data = {
       comments: comments,
-      channel: channel,
-      channel_json: JSON.stringify(
-        _.pick(channel, ['key', 'title'])
-      ),
+      // channel: channel,
+      // channel_json: JSON.stringify(
+      //   _.pick(channel, ['key', 'title'])
+      // ),
       helpers: {
+        flr: function (floor) {
+          return floor.toString().slice(-floorBits)
+        },
         format: function (text) {
           var html = Handlebars.Utils.escapeExpression(text)
           html = html.replace(/[\r\n]+/g, '<br>')

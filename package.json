@@ -1,7 +1,7 @@
 {
-  "name": "channel",
+  "name": "paste",
   "version": "0.0.2",
-  "description": "在线云频道",
+  "description": "在线云粘贴",
   "private": true,
   "main": "src/server",
   "scripts": {

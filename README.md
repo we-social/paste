@@ -1,15 +1,8 @@
-轻应用：#在线云频道#
+轻应用：#在线云粘贴#
 ===
 
-- 复制于：[#微信话题墙#](https://github.com/fritx/wxtopic)
-- 在线演示：<http://channel.fritx.me>
-- 相关博文：[跟我一起来升级#在线云频道#（1）](http://fritx.github.io/blog/?2015/05/channel-dev-together-01/)
-
-<img width="200" src="pic/截图 2015-05-03 20.02.19.png">
-&nbsp;&nbsp;
-<img width="200" src="pic/截图 2015-05-03 20.02.38.png">
-&nbsp;&nbsp;
-<img width="200" src="pic/截图 2015-05-03 20.02.48.png">
+- 精简于：[#在线云频道#](https://github.com/fritx/channel)
+- 在线演示：<http://paste.fritx.me>
 
 ## 项目亮点
 
@@ -38,8 +31,8 @@
 ```
 $ npm install -g gulp
 $ npm install -g bower
-$ git clone git@github.com:fritx/channel.git
-$ cd channel
+$ git clone git@github.com:fritx/paste.git
+$ cd paste
 $ npm install
 $ bower install
 $ cp -r config-default config

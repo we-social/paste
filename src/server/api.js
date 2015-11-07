@@ -2,7 +2,7 @@ var uuid = require('node-uuid').v4
 var bodyParser = require('body-parser')
 var multer = require('multer')
 var db = require('./db')
-var dbChannels = db.dbChannels
+// var dbChannels = db.dbChannels
 var dbComments = db.dbComments
 var tss = require('./lib/tss')
 var fs = require('fs-extra')
@@ -15,15 +15,16 @@ module.exports = function (app) {
   app.use('/api', bodyParser.urlencoded({ extended: false }))
   app.use('/api', multer({ limits: bytes('4mb') }))
 
-  app.post('/api/channels/:key/comments', function (req, res, next) {
-    var channel = dbChannels.find({
-      key: req.params.key
-    })
-    if (!channel || channel._del) {
-      return res.status(404).send({
-        error: 'channel not found with key: ' + req.params.key
-      })
-    }
+  // app.post('/api/channels/:key/comments', function (req, res, next) {
+  app.post('/api/comments', function (req, res, next) {
+    // var channel = dbChannels.find({
+    //   key: req.params.key
+    // })
+    // if (!channel || channel._del) {
+    //   return res.status(404).send({
+    //     error: 'channel not found with key: ' + req.params.key
+    //   })
+    // }
     var text = req.body['text'] || ''
     text = text.trim().slice(0, 2000)
     var media = req.files['media']
@@ -54,14 +55,15 @@ module.exports = function (app) {
         })
       }
     }
-    var followed = dbComments.chain().filter({
-      channel_id: channel.id
-    }).last().value()
+    // var followed = dbComments.chain().filter({
+    //   channel_id: channel.id
+    // }).last().value()
+    var followed = dbComments.chain().last().value()
     var nextFloor = followed ? followed.floor + 1 : 1
     var comment = {
       id: getNextId(dbComments),
       floor: nextFloor,
-      channel_id: channel.id,
+      // channel_id: channel.id,
       ip: req.ip,
       timestamp: tss()
     }
@@ -77,28 +79,28 @@ module.exports = function (app) {
     res.send({ floor: comment.floor })
   })
 
-  app.post('/api/channels', function (req, res) {
-    var title = req.body['title'] || ''
-    title = title.trim().slice(0, 100)
-    if (title.length < 1) {
-      return res.status(400).send({
-        error: 'empty channel title'
-      })
-    }
-    var channel = dbChannels.find({ title: title })
-    if (!channel) {
-      channel = {
-        id: getNextId(dbChannels),
-        key: uuid(),
-        title: title,
-        ip: req.ip,
-        timestamp: tss()
-      }
-      dbChannels.push(channel)
-      db.save()
-    }
-    res.send({ key: channel.key })
-  })
+  // app.post('/api/channels', function (req, res) {
+  //   var title = req.body['title'] || ''
+  //   title = title.trim().slice(0, 100)
+  //   if (title.length < 1) {
+  //     return res.status(400).send({
+  //       error: 'empty channel title'
+  //     })
+  //   }
+  //   var channel = dbChannels.find({ title: title })
+  //   if (!channel) {
+  //     channel = {
+  //       id: getNextId(dbChannels),
+  //       key: uuid(),
+  //       title: title,
+  //       ip: req.ip,
+  //       timestamp: tss()
+  //     }
+  //     dbChannels.push(channel)
+  //     db.save()
+  //   }
+  //   res.send({ key: channel.key })
+  // })
 
 }
 

@@ -3,14 +3,16 @@
 <head>
   <base href="../">
   <meta charset="utf-8">
-  <title>##{{channel.title}}##</title>
+  <!-- <title>##{{channel.title}}##</title> -->
+  <title>#在线云粘贴#</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
   <link rel="stylesheet" href="static/dist/app/channel-view.css">
 </head>
 <body>
 <img style="position:absolute;left:-999px;top:-999px" src="static/logo.jpg">
 <div class="container">
-  <h1>##{{channel.title}}##</h1>
+  <!-- <h1>##{{channel.title}}##</h1> -->
+  <h1>#在线云粘贴#</h1>
   <form id="form_comment" onsubmit="return false">
     <input type="file" capture="camera" name="media"/>
     <div class="input-group">
@@ -25,7 +27,7 @@
     {{#each comments}}
     {{#if _del}}{{else}}
     <li>
-      <div><label>{{floor}}</label></div>
+      <div><label>{{flr floor}}</label></div>
       <div>
         <article>
           {{#if audio_src}}
@@ -46,7 +48,7 @@
   {{else}}
   <aside>这里啥都没有</aside>
   {{/if}}
-  <footer>&copy; 2015 <a href="./">在线云频道</a></footer>
+  <footer>&copy; 2015 <a href="./">在线云粘贴</a></footer>
 </div>
 
 <script src="static/dist/jquery.min.js"></script>
@@ -56,7 +58,7 @@
 <script src="static/dist/app/db.js"></script>
 <script>
   var urlPrefix = '{{url_prefix}}'
-  var channel = {{{channel_json}}}
+  // var channel = {{{channel_json}}}
 </script>
 <script src="static/dist/app/channel-view.js"></script>
 
@@ -108,8 +110,9 @@
   })
   wx.ready(function() {
     var messageData = {
-      title: '#在线云频道#',
-      desc: '我正在频道 ##' + channel.title + '##',
+      title: '#在线云粘贴#',
+      // desc: '我正在频道 ##' + channel.title + '##',
+      desc: '我正在频道 #在线云粘贴#',
       link: location.href,
       imgUrl: location.origin + urlPrefix + '/static/logo.jpg',
       trigger: function (res) {

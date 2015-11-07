@@ -16,7 +16,8 @@ $(function initPage() {
   })
 
   var myComment = dbMyComments
-    .findLast({ channel_key: channel.key }).value()
+    // .findLast({ channel_key: channel.key }).value()
+    .last().value()
   if (myComment) {
     //document.title = '我参与了 ##' + channel.title + '##'
   }
@@ -26,7 +27,8 @@ $(function initPage() {
     if (submitted) return alert('稍安勿躁')
     var form = $form_comment.serializeJSON()
     if (!form['text'] && !$input_media.val()) return
-    var url = 'api/channels/' + channel.key + '/comments'
+    // var url = 'api/channels/' + channel.key + '/comments'
+    var url = 'api/comments'
     submitted = true
     if ($input_media.val()) {
       $input_media.ajaxfileupload({
@@ -53,8 +55,8 @@ $(function initPage() {
       return alert('发送失败，为毛？')
     }
     dbMyComments.push({
-      floor: d.floor,
-      channel_key: channel.key
+      // channel_key: channel.key,
+      floor: d.floor
     })
     dbMyComments.save()
     $form_comment[0].reset()
